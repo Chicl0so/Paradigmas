@@ -1,10 +1,11 @@
 class BaseDeDatos:
     def __init__(self):
         self.ListaArt = []
-        self.IVA = 17.5/100
+        self.IVA = 1+17.5/100
         self.Lista =[]
         self.Tamaño = len(self.Lista)
         self.bandera = 0
+        
     def Altas(self):
         respuesta = 0
         while respuesta == 0:
@@ -12,7 +13,7 @@ class BaseDeDatos:
             Codigo = input("codigo: ")
             precio = int(input("precio: "))
             stock = int(input("stock: "))
-            cupon = (1-float(input('descuento: ')))/100
+            cupon = 1-(float(input('descuento: ')))/100
             articulo = Articulo(articulo1,Codigo,precio,stock,cupon)
             self.Lista.append(articulo)
             self.ListaArt.append(articulo.Articulo)
@@ -23,20 +24,27 @@ class BaseDeDatos:
             
         print(self.ListaArt)
     def buscar(self,buscador):
-        print(self.Tamaño)
+        if self.Tamaño != 0:
+            print("No hay objetos en el almacen")
+            self.bandera = 0
+            
+        else:
+            for i in range (0,self.Tamaño):
+                if self.Lista[i].Articulo == buscador:
+                    print("Articulo: ",self.Lista[i].Articulo,"\nPrecio: ",self.Lista[i].Precio,"\nCantidad en Stock: ",self.Lista[i].CTotal)
+                    self.bandera = i
         
-        for i in range (0,self.Tamaño):
-            if self.Lista[i].Articulo == buscador:
-                print("Articulo: ",self.Lista[i].Articulo,"\nPrecio: ",self.Lista[i].Precio,"\nCantidad en Stock: ",self.Lista[i].CTotal)
-                self.bandera = i
-      
 
     def Bajas(self):
         self.Baja = input("Articulo a dar de baja")
         self.buscar(self.Baja)
-        if self.Lista[self.bandera] in self.Lista:
-            self.Lista.remove(self.Lista[self.bandera])
-            print(self.Lista)
+        if self.Tamaño != 0:
+            if self.Lista[self.bandera] in self.Lista:
+                self.Lista.remove(self.Lista[self.bandera])
+                self.Tamaño = len(self.Lista)
+                if self.Tamaño != 0:
+                    for i in (0,self.Tamaño):
+                        print(self.Lista[i].Articulo)
         else:
             print("el elemento no esta en el almacen")
     def cambios(self):
@@ -44,13 +52,19 @@ class BaseDeDatos:
         while respuesta != 1:
             respuesta = input("Qué deseas cambiar /n Precio/nStock/nCupon/nIVA/nNada")
             if respuesta == "Precio":
-                self.Precio = float(input("Precio:"))
+                busca = input("objeto a cambiar:")
+                self.buscar(busca)
+                self.Lista[self.bandera].Precio = float(input("Precio:"))
             if respuesta == "Stock":
-                self.CTotal = float(input("Stock:"))
+                busca = input("objeto a cambiar:")
+                self.buscar(busca)
+                self.Lista[self.bandera].Stock = int(input("Stock:"))
             if respuesta == "Cupon":
-                self.Cupon = float(input("Cupon:"))
+                busca = input("objeto a cambiar:")
+                self.buscar(busca)
+                self.Lista[self.bandera].Cupon = 1-float(input("descuento:"))/100
             if respuesta == "IVA":
-                self.IVA = float(input("IVA:"))/100
+                self.IVA = (1+float(input("IVA:")))/100
             if respuesta == "Nada":
                 break
         pass
@@ -63,7 +77,7 @@ class BaseDeDatos:
         else:
             print("No hay algun objeto en el almacen")
     def ModificarIVA(self):
-        self.IVA = float(input("IVA Nuevo: "))/100
+        self.IVA =1+ float(input("IVA Nuevo: "))/100
     def CrearRepositorio(self):
         
         for i in range(0,self.Tamaño):
@@ -81,9 +95,15 @@ class BaseDeDatos:
         venta = input("articulo a comprar: ")
         self.buscar(venta)
         self.cantidad = int(input("cantidad a comprar: "))
-        self.Lista[self.bandera].CTotal -= self.cantidad
-        print("cantidad a pagar: ",self.Lista[self.bandera].Precio*self.cantidad)
-        self.Lista[self.bandera].CVendida += self.cantidad
+        if self.cantidad >= 3:
+            self.Lista[self.bandera].CTotal -= self.cantidad
+            print("cantidad a pagar: ",self.Lista[self.bandera].Precio*self.cantidad*self.Lista[self.bandera].Cupon*self.IVA)
+            self.Lista[self.bandera].CVendida += self.cantidad
+        if self.cantidad < 3:
+            self.Lista[self.bandera].CTotal -= self.cantidad
+            print("cantidad a pagar: ",self.Lista[self.bandera].Precio*self.cantidad*self.IVA)
+            self.Lista[self.bandera].CVendida += self.cantidad
+
         if self.Lista[self.bandera].CTotal < 0:
             self.Lista[self.bandera].CTotal = self.Lista[self.bandera].CTotal+self.cantidad
             
