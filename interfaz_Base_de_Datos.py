@@ -1,5 +1,5 @@
 import practica 
-Base1 = practica.BaseDeDatos()
+Ferreteria = practica.BaseDeDatos()
 def Interfaz():
     respuesta = input("1.Comprar\n2.Cambiar Algo\n3.Agregar Articulo\n4..Dar de baja algun articulo\n5.Listar\n6.Salir")
     if respuesta == "1":
