@@ -5,7 +5,7 @@ class BaseDeDatos:
         self.Lista =[]
         self.Tamaño = len(self.Lista)
         self.bandera = 0
-        
+        self.Veces =0
     def Altas(self):
         respuesta = 0
         while respuesta == 0:
@@ -78,15 +78,36 @@ class BaseDeDatos:
             print("No hay algun objeto en el almacen")
     def ModificarIVA(self):
         self.IVA =1+ float(input("IVA Nuevo: "))/100
+        self.CrearRepositorio()
     def CrearRepositorio(self):
-        
+        self.Veces += 1
+        self.trrrr = str(self.Veces)
+        nombre = "Tiendita_mia_como_te_quiero"+self.trrrr+".txt"
         for i in range(0,self.Tamaño):
-            self.repositorio = open('Tiendita_mia_como_te_quiero.txt', 'a')
+            self.repositorio = open(nombre, 'a')
             L1 = self.Lista[i].Articulo
             L2 = self.Lista[i].Clave
+            L3 = self.Lista[i].Precio
+            L4 = self.Lista[i].CVendida
+            L5 = self.Lista[i].CTotal
+            L6 = self.Lista[i].Cupon
+            L7 = self.IVA
+
             self.repositorio.writelines(L1)
-            self.repositorio.writelines("\n")
+            self.repositorio.writelines(" ")
             self.repositorio.writelines(L2)
+            self.repositorio.writelines(" ")
+            self.repositorio.writelines(L3)
+            self.repositorio.writelines(" ")
+            self.repositorio.writelines(L4)
+            self.repositorio.writelines(" ")
+            self.repositorio.writelines(L5)
+            self.repositorio.writelines(" ")
+            self.repositorio.writelines(L6)
+            self.repositorio.writelines(" ")
+            self.repositorio.writelines(L7)
+            self.repositorio.writelines("\n")
+            
             self.repositorio.close
        
     def DelRepositorio(self):
@@ -94,26 +115,29 @@ class BaseDeDatos:
     def Venta(self):
         venta = input("articulo a comprar: ")
         self.buscar(venta)
-        self.cantidad = int(input("cantidad a comprar: "))
-        if self.cantidad >= 3:
-            self.Lista[self.bandera].CTotal -= self.cantidad
-            print("cantidad a pagar: ",self.Lista[self.bandera].Precio*self.cantidad*self.Lista[self.bandera].Cupon*self.IVA)
-            self.Lista[self.bandera].CVendida += self.cantidad
-        if self.cantidad < 3:
-            self.Lista[self.bandera].CTotal -= self.cantidad
-            print("cantidad a pagar: ",self.Lista[self.bandera].Precio*self.cantidad*self.IVA)
-            self.Lista[self.bandera].CVendida += self.cantidad
+        if venta in self.Lista:
+            self.cantidad = int(input("cantidad a comprar: "))
+            if self.cantidad >= 3:
+                self.Lista[self.bandera].CTotal -= self.cantidad
+                print("cantidad a pagar: ",self.Lista[self.bandera].Precio*self.cantidad*self.Lista[self.bandera].Cupon*self.IVA)
+                self.Lista[self.bandera].CVendida += self.cantidad
+            if self.cantidad < 3:
+                self.Lista[self.bandera].CTotal -= self.cantidad
+                print("cantidad a pagar: ",self.Lista[self.bandera].Precio*self.cantidad*self.IVA)
+                self.Lista[self.bandera].CVendida += self.cantidad
 
-        if self.Lista[self.bandera].CTotal < 0:
-            self.Lista[self.bandera].CTotal = self.Lista[self.bandera].CTotal+self.cantidad
-            
-            print("solo se puede comprar ",self.Lista[self.bandera].CTotal,"\n desea seguir comprando?")
-            respuesta = input()
-            if respuesta == "si":
-                self.Venta()
-            if respuesta == "no":
-                pass
-
+            if self.Lista[self.bandera].CTotal < 0:
+                self.Lista[self.bandera].CTotal = self.Lista[self.bandera].CTotal+self.cantidad
+                
+                print("solo se puede comprar ",self.Lista[self.bandera].CTotal,"\n desea seguir comprando?")
+                respuesta = input()
+                if respuesta == "si":
+                    self.Venta()
+                if respuesta == "no":
+                    pass
+            self.CrearRepositorio()
+        else:
+            print("El objeto no esta disponible")            
 
 
 
