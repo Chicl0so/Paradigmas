@@ -1,21 +1,21 @@
 import practica 
-Base1 = practica.BaseDeDatos()
+Ferreteria = practica.BaseDeDatos()
 def Interfaz():
     respuesta = input("1.Comprar\n2.Cambiar Algo\n3.Agregar Articulo\n4.Dar de baja algun articulo\n5.Listar\n6.Salir")
     if respuesta == "1":
-        Base1.Venta()
+        Ferreteria.Venta()
         Interfaz()
     if respuesta == "2":
-        Base1.cambios()
+        Ferreteria.cambios()
         Interfaz()
     if respuesta == "3":
-        Base1.Altas()
+        Ferreteria.Altas()
         Interfaz()
     if respuesta == "4":
-        Base1.Bajas()
+        Ferreteria.Bajas()
         Interfaz()
     if respuesta == "5":
-        Base1.Listar()
+        Ferreteria.Listar()
         Interfaz()
     
 Interfaz()
