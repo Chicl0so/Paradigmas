@@ -6,6 +6,7 @@ class BaseDeDatos:
         self.Tamaño = len(self.Lista)
         self.bandera = 0
         self.Veces =0
+        self.repositorio = ""
     def Altas(self):
         respuesta = 0
         while respuesta == 0:
@@ -24,7 +25,7 @@ class BaseDeDatos:
             
         print(self.ListaArt)
     def buscar(self,buscador):
-        if self.Tamaño != 0:
+        if self.Tamaño == 0:
             print("No hay objetos en el almacen")
             self.bandera = 0
             
@@ -42,9 +43,8 @@ class BaseDeDatos:
             if self.Lista[self.bandera] in self.Lista:
                 self.Lista.remove(self.Lista[self.bandera])
                 self.Tamaño = len(self.Lista)
-                if self.Tamaño != 0:
-                    for i in (0,self.Tamaño):
-                        print(self.Lista[i].Articulo)
+                self.Listar()
+                self.CrearRepositorio()
         else:
             print("el elemento no esta en el almacen")
     def cambios(self):
@@ -64,9 +64,10 @@ class BaseDeDatos:
                 self.buscar(busca)
                 self.Lista[self.bandera].Cupon = 1-float(input("descuento:"))/100
             if respuesta == "IVA":
-                self.IVA = (1+float(input("IVA:")))/100
+                self.ModificarIVA()
             if respuesta == "Nada":
                 break
+            
         pass
     def Listar(self):
         self.Tamaño = len(self.Lista)
@@ -87,26 +88,26 @@ class BaseDeDatos:
             self.repositorio = open(nombre, 'a')
             L1 = self.Lista[i].Articulo
             L2 = self.Lista[i].Clave
-            L3 = self.Lista[i].Precio
-            L4 = self.Lista[i].CVendida
-            L5 = self.Lista[i].CTotal
-            L6 = self.Lista[i].Cupon
-            L7 = self.IVA
+            L3 = str(self.Lista[i].Precio)
+            L4 = str(self.Lista[i].CVendida)
+            L5 = str(self.Lista[i].CTotal)
+            L6 = str(self.Lista[i].Cupon)
+            L7 = str(self.IVA)
 
-            self.repositorio.writelines(L1)
-            self.repositorio.writelines(" ")
-            self.repositorio.writelines(L2)
-            self.repositorio.writelines(" ")
-            self.repositorio.writelines(L3)
-            self.repositorio.writelines(" ")
-            self.repositorio.writelines(L4)
-            self.repositorio.writelines(" ")
-            self.repositorio.writelines(L5)
-            self.repositorio.writelines(" ")
-            self.repositorio.writelines(L6)
-            self.repositorio.writelines(" ")
-            self.repositorio.writelines(L7)
-            self.repositorio.writelines("\n")
+            self.repositorio.write(L1)
+            self.repositorio.write(" ")
+            self.repositorio.write(L2)
+            self.repositorio.write(" ")
+            self.repositorio.write(L3)
+            self.repositorio.write(" ")
+            self.repositorio.write(L4)
+            self.repositorio.write(" ")
+            self.repositorio.write(L5)
+            self.repositorio.write(" ")
+            self.repositorio.write(L6)
+            self.repositorio.write(" ")
+            self.repositorio.write(L7)
+            self.repositorio.write("\n")
             
             self.repositorio.close
        
