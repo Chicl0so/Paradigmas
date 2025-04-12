@@ -21,7 +21,8 @@ class BaseDeDatos:
             respuesta = int(input("1 para salir/n 0 para seguir"))
             
             self.Tamaño = len(self.Lista)
-        self.CrearRepositorio()
+            self.CrearRepositorio()
+        
             
         print(self.ListaArt)
     def buscar(self,buscador):
@@ -85,7 +86,7 @@ class BaseDeDatos:
         self.trrrr = str(self.Veces)
         nombre = "Tiendita_mia_como_te_quiero"+self.trrrr+".txt"
         for i in range(0,self.Tamaño):
-            self.repositorio = open(nombre, 'a')
+            self.repositorio = open("Tiendita_mia_como_te_quiero.txt", 'a')
             L1 = self.Lista[i].Articulo
             L2 = self.Lista[i].Clave
             L3 = str(self.Lista[i].Precio)
@@ -112,7 +113,8 @@ class BaseDeDatos:
             self.repositorio.close
        
     def DelRepositorio(self):
-        del self.repositorio
+        borrar = input("Repositorio a borrar: ")
+        os.remove(borrar)
     def Venta(self):
         venta = input("articulo a comprar: ")
         self.buscar(venta)
